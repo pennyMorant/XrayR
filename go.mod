@@ -20,7 +20,7 @@ require (
 	github.com/shirou/gopsutil/v3 v3.23.2
 	github.com/spf13/viper v1.15.0
 	github.com/stretchr/testify v1.8.2
-	github.com/xtls/xray-core v1.8.0
+	github.com/xtls/xray-core v1.7.5
 	golang.org/x/crypto v0.7.0
 	golang.org/x/net v0.8.0
 	golang.org/x/time v0.3.0
@@ -166,7 +166,7 @@ require (
 	github.com/vinyldns/go-vinyldns v0.9.16 // indirect
 	github.com/vmihailenco/msgpack v4.0.4+incompatible // indirect
 	github.com/vultr/govultr/v2 v2.17.2 // indirect
-	github.com/xtls/reality v0.0.0-20230309125256-0d0713b108c8 // indirect
+	github.com/xtls/go v0.0.0-20230107031059-4610f88d00f3 // indirect
 	github.com/yandex-cloud/go-genproto v0.0.0-20220805142335-27b56ddae16f // indirect
 	github.com/yandex-cloud/go-sdk v0.0.0-20220805164847-cf028e604997 // indirect
 	github.com/yusufpapurcu/wmi v1.2.2 // indirect
