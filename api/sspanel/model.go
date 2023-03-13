@@ -52,7 +52,7 @@ type UserResponse struct {
 	Port          uint32  `json:"port"`
 	Method        string  `json:"method"`
 	SpeedLimit    float64 `json:"node_speedlimit"`
-	DeviceLimit   int     `json:"node_connector"`
+	DeviceLimit   int     `json:"node_iplimit"`
 	Protocol      string  `json:"protocol"`
 	ProtocolParam string  `json:"protocol_param"`
 	Obfs          string  `json:"obfs"`
