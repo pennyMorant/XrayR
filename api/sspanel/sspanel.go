@@ -515,6 +515,7 @@ func (c *APIClient) ParseSSNodeResponse(nodeInfoResponse *NodeInfoResponse) (*ap
 		SpeedLimit:        speedlimit,
 		TransportProtocol: "tcp",
 		CypherMethod:      method,
+		ServerKey:         nodeInfoResponse.ServerKey, // shadowsocks2022 share key
 	}
 
 	return nodeinfo, nil
