@@ -197,7 +197,6 @@ func (c *Controller) checkShadowsocksPassword(password string, method string) (s
 			userKey = password[:32]
 		}
 		return base64.StdEncoding.EncodeToString([]byte(userKey)), nil
-	}
 	} else {
 		return password, nil
 	}
