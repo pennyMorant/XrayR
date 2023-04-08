@@ -8,12 +8,9 @@ type NodeInfoResponse struct {
 	Class           int             `json:"node_class"`
 	SpeedLimit      float64         `json:"node_speedlimit"`
 	TrafficRate     float64         `json:"traffic_rate"`
-	MuOnly          int             `json:"mu_only"`
 	Sort            int             `json:"sort"`
-	RawServerString string          `json:"server"`
 	Type            string          `json:"type"`
 	CustomConfig    json.RawMessage `json:"custom_config"`
-	Version         string          `json:"version"`
 }
 
 type CustomConfig struct {
@@ -51,17 +48,9 @@ type UserResponse struct {
 	Email         string  `json:"email"`
 	Passwd        string  `json:"passwd"`
 	Port          uint32  `json:"port"`
-	Method        string  `json:"method"`
 	SpeedLimit    float64 `json:"node_speedlimit"`
 	DeviceLimit   int     `json:"node_iplimit"`
-	Protocol      string  `json:"protocol"`
-	ProtocolParam string  `json:"protocol_param"`
-	Obfs          string  `json:"obfs"`
-	ObfsParam     string  `json:"obfs_param"`
-	ForbiddenIP   string  `json:"forbidden_ip"`
-	ForbiddenPort string  `json:"forbidden_port"`
 	UUID          string  `json:"uuid"`
-	MultiUser     int     `json:"is_multi_user"`
 	AliveIP       int     `json:"alive_ip"`
 }
 

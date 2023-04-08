@@ -58,10 +58,6 @@ type UserInfo struct {
 	Method        string
 	SpeedLimit    uint64 // Bps
 	DeviceLimit   int
-	Protocol      string
-	ProtocolParam string
-	Obfs          string
-	ObfsParam     string
 	UUID          string
 	AlterID       uint16
 }
