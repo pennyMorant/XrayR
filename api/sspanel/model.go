@@ -26,7 +26,7 @@ type CustomConfig struct {
 	MuProtocol     string          `json:"mu_protocol"`
 	MuObfs         string          `json:"mu_obfs"`
 	MuSuffix       string          `json:"mu_suffix"`
-	ServerKey	   string		   `json:"server_key"`
+	ServerPsk	   string		   `json:"server_psk"`
 	V2Port         string          `json:"v2_port"`
 	TLS            string          `json:"tls"`
 	EnableVless    string          `json:"enable_vless"`

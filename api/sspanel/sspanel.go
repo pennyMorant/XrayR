@@ -808,7 +808,7 @@ func (c *APIClient) ParseSSPanelNodeInfo(nodeInfoResponse *NodeInfoResponse) (*a
 		TLSType:           TLSType,
 		EnableVless:       EnableVless,
 		CypherMethod:      nodeConfig.MuEncryption,
-		ServerKey:		   nodeConfig.ServerKey,
+		ServerKey:		   nodeConfig.ServerPsk,
 		ServiceName:       nodeConfig.Servicename,
 		Header:            nodeConfig.Header,
 	}
