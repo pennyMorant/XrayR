@@ -35,7 +35,6 @@ type NodeInfo struct {
 	NodeID            int
 	Port              uint32
 	SpeedLimit        uint64 // Bps
-	AlterID           uint16
 	TransportProtocol string
 	FakeType          string
 	Host              string
@@ -59,7 +58,6 @@ type UserInfo struct {
 	SpeedLimit    uint64 // Bps
 	DeviceLimit   int
 	UUID          string
-	AlterID       uint16
 }
 
 type OnlineUser struct {
