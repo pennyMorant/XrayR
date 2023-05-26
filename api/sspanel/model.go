@@ -4,7 +4,6 @@ import "encoding/json"
 
 // NodeInfoResponse is the response of node
 type NodeInfoResponse struct {
-	Group           int             `json:"node_group"`
 	Class           int             `json:"node_class"`
 	SpeedLimit      float64         `json:"node_speedlimit"`
 	TrafficRate     float64         `json:"traffic_rate"`
