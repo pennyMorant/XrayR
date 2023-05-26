@@ -168,6 +168,21 @@ func (c *Controller) buildUserTag(user *api.UserInfo) string {
 }
 
 func (c *Controller) checkShadowsocksPassword(password string, method string) (string, error) {
-	
-	return password, nil
+	if strings.Contains(c.panelType, "V2board") {
+		var userKey string
+		if len(password) < 16 {
+			return "", newError("shadowsocks2022 key's length must be greater than 16").AtWarning()
+		}
+		if method == "2022-blake3-aes-128-gcm" {
+			userKey = password[:16]
+		} else {
+			if len(password) < 32 {
+				return "", newError("shadowsocks2022 key's length must be greater than 32").AtWarning()
+			}
+			userKey = password[:32]
+		}
+		return base64.StdEncoding.EncodeToString([]byte(userKey)), nil
+	} else {
+		return password, nil
+	}
 }
