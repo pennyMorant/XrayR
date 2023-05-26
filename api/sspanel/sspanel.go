@@ -412,6 +412,7 @@ func (c *APIClient) ParseSSPanelNodeInfo(nodeInfoResponse *NodeInfoResponse) (*a
 
 	var speedlimit uint64 = 0
 	var EnableTLS, EnableVless bool
+	var AlterID uint16 = 0
 	var TLSType, transportProtocol string
 
 	nodeConfig := new(CustomConfig)
@@ -436,6 +437,12 @@ func (c *APIClient) ParseSSPanelNodeInfo(nodeInfoResponse *NodeInfoResponse) (*a
 	if c.NodeType == "V2ray" {
 		transportProtocol = nodeConfig.Network
 		TLSType = nodeConfig.Security
+		if parsedAlterID, err := strconv.ParseInt(nodeConfig.AlterID, 10, 16); err != nil {
+			return nil, err
+		} else {
+			AlterID = uint16(parsedAlterID)
+		}
+
 		if TLSType == "tls" || TLSType == "xtls" {
 			EnableTLS = true
 		}
@@ -470,6 +477,7 @@ func (c *APIClient) ParseSSPanelNodeInfo(nodeInfoResponse *NodeInfoResponse) (*a
 		NodeID:            c.NodeID,
 		Port:              port,
 		SpeedLimit:        speedlimit,
+		AlterID:           AlterID,
 		TransportProtocol: transportProtocol,
 		Host:              nodeConfig.Host,
 		Path:              nodeConfig.Path,

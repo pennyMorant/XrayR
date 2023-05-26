@@ -384,7 +384,7 @@ func (c *Controller) addNewUser(userInfo *[]api.UserInfo, nodeInfo *api.NodeInfo
 		if nodeInfo.EnableVless {
 			users = c.buildVlessUser(userInfo)
 		} else {
-			users = c.buildVmessUser(userInfo)
+			users = c.buildVmessUser(userInfo, alterID)
 		}
 	case "Trojan":
 		users = c.buildTrojanUser(userInfo)
