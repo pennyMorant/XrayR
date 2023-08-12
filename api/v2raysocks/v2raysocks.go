@@ -28,7 +28,6 @@ type APIClient struct {
 	Key           string
 	NodeType      string
 	EnableVless   bool
-	EnableXTLS    bool
 	SpeedLimit    float64
 	DeviceLimit   int
 	LocalRuleList []api.DetectRule
@@ -67,7 +66,6 @@ func New(apiConfig *api.Config) *APIClient {
 		APIHost:       apiConfig.APIHost,
 		NodeType:      apiConfig.NodeType,
 		EnableVless:   apiConfig.EnableVless,
-		EnableXTLS:    apiConfig.EnableXTLS,
 		SpeedLimit:    apiConfig.SpeedLimit,
 		DeviceLimit:   apiConfig.DeviceLimit,
 		LocalRuleList: localRuleList,
@@ -223,7 +221,6 @@ func (c *APIClient) GetUserList() (UserList *[]api.UserInfo, err error) {
 		case "V2ray":
 			user.UUID = response.Get("data").GetIndex(i).Get("v2ray_user").Get("uuid").MustString()
 			user.Email = response.Get("data").GetIndex(i).Get("v2ray_user").Get("email").MustString()
-			user.AlterID = uint16(response.Get("data").GetIndex(i).Get("v2ray_user").Get("alter_id").MustUint64())
 			user.SpeedLimit = response.Get("data").GetIndex(i).Get("v2ray_user").Get("speed_limit").MustUint64() * 1000000 / 8
 		}
 		if c.SpeedLimit > 0 {
@@ -302,10 +299,6 @@ func (c *APIClient) ReportIllegal(detectResultList *[]api.DetectResult) error {
 
 // ParseTrojanNodeResponse parse the response for the given nodeInfo format
 func (c *APIClient) ParseTrojanNodeResponse(nodeInfoResponse *simplejson.Json) (*api.NodeInfo, error) {
-	var TLSType = "tls"
-	if c.EnableXTLS {
-		TLSType = "xtls"
-	}
 
 	tmpInboundInfo := nodeInfoResponse.Get("inbounds").MustArray()
 	marshalByte, _ := json.Marshal(tmpInboundInfo[0].(map[string]interface{}))
@@ -321,7 +314,6 @@ func (c *APIClient) ParseTrojanNodeResponse(nodeInfoResponse *simplejson.Json) (
 		Port:              port,
 		TransportProtocol: "tcp",
 		EnableTLS:         true,
-		TLSType:           TLSType,
 		Host:              host,
 	}
 	return nodeInfo, nil
@@ -364,14 +356,9 @@ func (c *APIClient) ParseSSNodeResponse(nodeInfoResponse *simplejson.Json) (*api
 
 // ParseV2rayNodeResponse parse the response for the given nodeInfo format
 func (c *APIClient) ParseV2rayNodeResponse(nodeInfoResponse *simplejson.Json) (*api.NodeInfo, error) {
-	var TLSType = "tls"
 	var path, host, serviceName string
 	var header json.RawMessage
 	var enableTLS bool
-	var alterID uint16 = 0
-	if c.EnableXTLS {
-		TLSType = "xtls"
-	}
 
 	tmpInboundInfo := nodeInfoResponse.Get("inbounds").MustArray()
 	marshalByte, _ := json.Marshal(tmpInboundInfo[0].(map[string]interface{}))
@@ -410,10 +397,8 @@ func (c *APIClient) ParseV2rayNodeResponse(nodeInfoResponse *simplejson.Json) (*
 		NodeType:          c.NodeType,
 		NodeID:            c.NodeID,
 		Port:              port,
-		AlterID:           alterID,
 		TransportProtocol: transportProtocol,
 		EnableTLS:         enableTLS,
-		TLSType:           TLSType,
 		Path:              path,
 		Host:              host,
 		EnableVless:       c.EnableVless,

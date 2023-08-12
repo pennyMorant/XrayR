@@ -24,7 +24,6 @@ type APIClient struct {
 	Key           string
 	NodeType      string
 	EnableVless   bool
-	EnableXTLS    bool
 	SpeedLimit    float64
 	DeviceLimit   int
 	LocalRuleList []api.DetectRule
@@ -57,7 +56,6 @@ func New(apiConfig *api.Config) *APIClient {
 		APIHost:       apiConfig.APIHost,
 		NodeType:      apiConfig.NodeType,
 		EnableVless:   apiConfig.EnableVless,
-		EnableXTLS:    apiConfig.EnableXTLS,
 		SpeedLimit:    apiConfig.SpeedLimit,
 		DeviceLimit:   apiConfig.DeviceLimit,
 		LocalRuleList: localRuleList,
@@ -412,13 +410,7 @@ func (c *APIClient) ReportIllegal(detectResultList *[]api.DetectResult) error {
 
 // ParseV2rayNodeResponse parse the response for the given nodeinfor format
 func (c *APIClient) ParseV2rayNodeResponse(nodeInfoResponse *json.RawMessage) (*api.NodeInfo, error) {
-	var TLStype string
 	var speedlimit uint64 = 0
-	if c.EnableXTLS {
-		TLStype = "xtls"
-	} else {
-		TLStype = "tls"
-	}
 
 	v2rayNodeInfo := new(V2rayNodeInfo)
 	if err := json.Unmarshal(*nodeInfoResponse, v2rayNodeInfo); err != nil {
@@ -441,11 +433,9 @@ func (c *APIClient) ParseV2rayNodeResponse(nodeInfoResponse *json.RawMessage) (*
 		NodeID:            c.NodeID,
 		Port:              v2rayNodeInfo.V2Port,
 		SpeedLimit:        speedlimit,
-		AlterID:           v2rayNodeInfo.V2AlterID,
 		TransportProtocol: v2rayNodeInfo.V2Net,
 		FakeType:          v2rayNodeInfo.V2Type,
 		EnableTLS:         v2rayNodeInfo.V2TLS,
-		TLSType:           TLStype,
 		Path:              v2rayNodeInfo.V2Path,
 		Host:              v2rayNodeInfo.V2Host,
 		EnableVless:       c.EnableVless,
@@ -485,15 +475,7 @@ func (c *APIClient) ParseSSNodeResponse(nodeInfoResponse *json.RawMessage) (*api
 
 // ParseTrojanNodeResponse parse the response for the given nodeinfor format
 func (c *APIClient) ParseTrojanNodeResponse(nodeInfoResponse *json.RawMessage) (*api.NodeInfo, error) {
-
-	var TLSType string
 	var speedlimit uint64 = 0
-	if c.EnableXTLS {
-		TLSType = "xtls"
-	} else {
-		TLSType = "tls"
-	}
-
 	trojanNodeInfo := new(TrojanNodeInfo)
 	if err := json.Unmarshal(*nodeInfoResponse, trojanNodeInfo); err != nil {
 		return nil, fmt.Errorf("unmarshal %s failed: %s", reflect.TypeOf(*nodeInfoResponse), err)
@@ -516,7 +498,6 @@ func (c *APIClient) ParseTrojanNodeResponse(nodeInfoResponse *json.RawMessage) (
 		SpeedLimit:        speedlimit,
 		TransportProtocol: "tcp",
 		EnableTLS:         true,
-		TLSType:           TLSType,
 	}
 
 	return nodeinfo, nil

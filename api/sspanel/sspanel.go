@@ -31,7 +31,6 @@ type APIClient struct {
 	Key                 string
 	NodeType            string
 	EnableVless         bool
-	EnableXTLS          bool
 	SpeedLimit          float64
 	DeviceLimit         int
 	DisableCustomConfig bool
@@ -72,7 +71,6 @@ func New(apiConfig *api.Config) *APIClient {
 		APIHost:             apiConfig.APIHost,
 		NodeType:            apiConfig.NodeType,
 		EnableVless:         apiConfig.EnableVless,
-		EnableXTLS:          apiConfig.EnableXTLS,
 		SpeedLimit:          apiConfig.SpeedLimit,
 		DeviceLimit:         apiConfig.DeviceLimit,
 		LocalRuleList:       localRuleList,
@@ -411,7 +409,6 @@ func (c *APIClient) ParseSSPanelNodeInfo(nodeInfoResponse *NodeInfoResponse) (*a
 
 	var speedlimit uint64 = 0
 	var EnableTLS, EnableVless bool
-	var AlterID uint16 = 0
 	var TLSType, transportProtocol string
 
 	nodeConfig := new(CustomConfig)
@@ -436,13 +433,8 @@ func (c *APIClient) ParseSSPanelNodeInfo(nodeInfoResponse *NodeInfoResponse) (*a
 	if c.NodeType == "V2ray" {
 		transportProtocol = nodeConfig.Network
 		TLSType = nodeConfig.Security
-		if parsedAlterID, err := strconv.ParseInt(nodeConfig.AlterID, 10, 16); err != nil {
-			return nil, err
-		} else {
-			AlterID = uint16(parsedAlterID)
-		}
 
-		if TLSType == "tls" || TLSType == "xtls" {
+		if TLSType == "tls" {
 			EnableTLS = true
 		}
 		if nodeConfig.EnableVless == "1" {
@@ -456,9 +448,7 @@ func (c *APIClient) ParseSSPanelNodeInfo(nodeInfoResponse *NodeInfoResponse) (*a
 		transportProtocol = "tcp"
 
 		// Select security type
-		if nodeConfig.EnableXtls == "1" {
-			TLSType = "xtls"
-		} else if nodeConfig.Security != "" {
+		if nodeConfig.Security != "" {
 			TLSType = nodeConfig.Security // try to read security from config
 		}
 
@@ -476,13 +466,12 @@ func (c *APIClient) ParseSSPanelNodeInfo(nodeInfoResponse *NodeInfoResponse) (*a
 		NodeID:            c.NodeID,
 		Port:              port,
 		SpeedLimit:        speedlimit,
-		AlterID:           AlterID,
 		TransportProtocol: transportProtocol,
 		Host:              nodeConfig.Host,
 		Path:              nodeConfig.Path,
 		EnableTLS:         EnableTLS,
-		TLSType:           TLSType,
 		EnableVless:       EnableVless,
+		VlessFlow:         nodeConfig.Flow,
 		CypherMethod:      nodeConfig.MuEncryption,
 		ServerKey:		   nodeConfig.ServerPsk,
 		ServiceName:       nodeConfig.Servicename,

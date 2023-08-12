@@ -75,6 +75,7 @@ func (c *Controller) Start() error {
 	if err != nil {
 		return err
 	}
+	
 	c.nodeInfo = newNodeInfo
 	c.Tag = c.buildNodeTag()
 
@@ -140,7 +141,7 @@ func (c *Controller) Start() error {
 	)
 
 	// Check cert service in need
-	if c.nodeInfo.EnableTLS {
+	if c.nodeInfo.EnableTLS && c.config.EnableREALITY == false {
 		c.tasks = append(c.tasks, periodicTask{
 			tag: "cert monitor",
 			Periodic: &task.Periodic{
@@ -384,14 +385,7 @@ func (c *Controller) addNewUser(userInfo *[]api.UserInfo, nodeInfo *api.NodeInfo
 		if nodeInfo.EnableVless {
 			users = c.buildVlessUser(userInfo)
 		} else {
-			var alterID uint16 = 0
-			if (c.panelType == "V2board" || c.panelType == "V2RaySocks") && len(*userInfo) > 0 {
-				// use latest userInfo
-				alterID = (*userInfo)[0].AlterID
-			} else {
-				alterID = nodeInfo.AlterID
-			}
-			users = c.buildVmessUser(userInfo, alterID)
+			users = c.buildVmessUser(userInfo)
 		}
 	case "Trojan":
 		users = c.buildTrojanUser(userInfo)
@@ -599,7 +593,7 @@ func (c *Controller) logPrefix() string {
 
 // Check Cert
 func (c *Controller) certMonitor() error {
-	if c.nodeInfo.EnableTLS {
+	if c.nodeInfo.EnableTLS && c.config.EnableREALITY == false {
 		switch c.config.CertConfig.CertMode {
 		case "dns", "http", "tls":
 			lego, err := mylego.New(c.config.CertConfig)

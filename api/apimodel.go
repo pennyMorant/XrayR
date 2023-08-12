@@ -14,7 +14,6 @@ type Config struct {
 	Key                 string  `mapstructure:"ApiKey"`
 	NodeType            string  `mapstructure:"NodeType"`
 	EnableVless         bool    `mapstructure:"EnableVless"`
-	EnableXTLS          bool    `mapstructure:"EnableXTLS"`
 	Timeout             int     `mapstructure:"Timeout"`
 	SpeedLimit          float64 `mapstructure:"SpeedLimit"`
 	DeviceLimit         int     `mapstructure:"DeviceLimit"`
@@ -35,14 +34,13 @@ type NodeInfo struct {
 	NodeID            int
 	Port              uint32
 	SpeedLimit        uint64 // Bps
-	AlterID           uint16
 	TransportProtocol string
 	FakeType          string
 	Host              string
 	Path              string
 	EnableTLS         bool
-	TLSType           string
 	EnableVless       bool
+	VlessFlow         string
 	CypherMethod      string
 	ServerKey         string
 	ServiceName       string
@@ -59,7 +57,6 @@ type UserInfo struct {
 	SpeedLimit    uint64 // Bps
 	DeviceLimit   int
 	UUID          string
-	AlterID       uint16
 }
 
 type OnlineUser struct {

@@ -26,7 +26,6 @@ type CustomConfig struct {
 	V2Port         string          `json:"v2_port"`
 	TLS            string          `json:"tls"`
 	EnableVless    string          `json:"enable_vless"`
-	AlterID        string          `json:"alter_id"`
 	Network        string          `json:"network"`
 	Security       string          `json:"security"`
 	Path           string          `json:"path"`
@@ -37,7 +36,6 @@ type CustomConfig struct {
 	AllowInsecure  string          `json:"allow_insecure"`
 	Grpc           string          `json:"grpc"`
 	Servicename    string          `json:"servicename"`
-	EnableXtls     string          `json:"enable_xtls"`
 	Flow           string          `json:"flow"`
 }
 

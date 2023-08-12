@@ -18,10 +18,8 @@ import (
 	"github.com/xtls/xray-core/infra/conf"
 
 	"github.com/zeropanel/XrayR/api"
-	"github.com/zeropanel/XrayR/api/pmpanel"
 	"github.com/zeropanel/XrayR/api/proxypanel"
 	"github.com/zeropanel/XrayR/api/sspanel"
-	"github.com/zeropanel/XrayR/api/v2board"
 	"github.com/zeropanel/XrayR/api/v2raysocks"
 	_ "github.com/zeropanel/XrayR/main/distro/all"
 	"github.com/zeropanel/XrayR/service"
@@ -178,12 +176,8 @@ func (p *Panel) Start() {
 		case "SSpanel":
 			apiClient = sspanel.New(nodeConfig.ApiConfig)
 		// todo Deprecated after 2023.6.1
-		case "V2board":
-			apiClient = v2board.New(nodeConfig.ApiConfig)
 		case "NewV2board":
 			apiClient = newV2board.New(nodeConfig.ApiConfig)
-		case "PMpanel":
-			apiClient = pmpanel.New(nodeConfig.ApiConfig)
 		case "Proxypanel":
 			apiClient = proxypanel.New(nodeConfig.ApiConfig)
 		case "V2RaySocks":
