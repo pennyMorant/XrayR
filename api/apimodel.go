@@ -12,8 +12,6 @@ type Config struct {
 	APIHost             string  `mapstructure:"ApiHost"`
 	NodeID              int     `mapstructure:"NodeID"`
 	Key                 string  `mapstructure:"ApiKey"`
-	NodeType            string  `mapstructure:"NodeType"`
-	EnableVless         bool    `mapstructure:"EnableVless"`
 	Timeout             int     `mapstructure:"Timeout"`
 	SpeedLimit          float64 `mapstructure:"SpeedLimit"`
 	DeviceLimit         int     `mapstructure:"DeviceLimit"`
@@ -30,7 +28,7 @@ type NodeStatus struct {
 }
 
 type NodeInfo struct {
-	NodeType          string // Must be V2ray, Trojan, and Shadowsocks
+	NodeType	      string
 	NodeID            int
 	Port              uint32
 	SpeedLimit        uint64 // Bps
@@ -39,7 +37,6 @@ type NodeInfo struct {
 	Host              string
 	Path              string
 	EnableTLS         bool
-	EnableVless       bool
 	VlessFlow         string
 	CypherMethod      string
 	ServerKey         string

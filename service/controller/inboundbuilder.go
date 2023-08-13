@@ -57,28 +57,26 @@ func InboundBuilder(config *Config, nodeInfo *api.NodeInfo, tag string) (*core.I
 	var proxySetting any
 	// Build Protocol and Protocol setting
 	switch nodeInfo.NodeType {
-	case "V2ray":
-		if nodeInfo.EnableVless {
-			protocol = "vless"
-			// Enable fallback
-			if config.EnableFallback {
-				fallbackConfigs, err := buildVlessFallbacks(config.FallBackConfigs)
-				if err == nil {
-					proxySetting = &conf.VLessInboundConfig{
-						Decryption: "none",
-						Fallbacks:  fallbackConfigs,
-					}
-				} else {
-					return nil, err
-				}
-			} else {
+	case "Vmess":
+		protocol = "vmess"
+		proxySetting = &conf.VMessInboundConfig{}
+	case "Vless":
+		protocol = "vless"
+		// Enable fallback
+		if config.EnableFallback {
+			fallbackConfigs, err := buildVlessFallbacks(config.FallBackConfigs)
+			if err == nil {
 				proxySetting = &conf.VLessInboundConfig{
 					Decryption: "none",
+					Fallbacks:  fallbackConfigs,
 				}
+			} else {
+				return nil, err
 			}
 		} else {
-			protocol = "vmess"
-			proxySetting = &conf.VMessInboundConfig{}
+			proxySetting = &conf.VLessInboundConfig{
+				Decryption: "none",
+			}
 		}
 	case "Trojan":
 		protocol = "trojan"

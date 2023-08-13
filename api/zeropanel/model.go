@@ -7,7 +7,7 @@ type NodeInfoResponse struct {
 	Class        int             `json:"node_class"`
 	SpeedLimit   float64         `json:"node_speedlimit"`
 	TrafficRate  float64         `json:"traffic_rate"`
-	Type         int             `json:"node_type"`
+	NodeType     string          `json:"node_type"`
 	CustomConfig json.RawMessage `json:"custom_config"`
 }
 
@@ -24,7 +24,6 @@ type CustomConfig struct {
 	ServerPsk      string          `json:"server_psk"`
 	V2Port         string          `json:"v2_port"`
 	TLS            string          `json:"tls"`
-	EnableVless    string          `json:"enable_vless"`
 	Network        string          `json:"network"`
 	Security       string          `json:"security"`
 	Path           string          `json:"path"`

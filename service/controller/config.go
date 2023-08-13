@@ -11,8 +11,7 @@ type Config struct {
 	UpdatePeriodic          int                              `mapstructure:"UpdatePeriodic"`
 	CertConfig              *mylego.CertConfig               `mapstructure:"CertConfig"`
 	EnableDNS               bool                             `mapstructure:"EnableDNS"`
-	DNSType                 string                           `mapstructure:"DNSType"`
-	EnableVless				bool							 `mapstructure:"EnableVless"`	
+	DNSType                 string                           `mapstructure:"DNSType"`	
 	DisableUploadTraffic    bool                             `mapstructure:"DisableUploadTraffic"`
 	DisableGetRule          bool                             `mapstructure:"DisableGetRule"`
 	EnableProxyProtocol     bool                             `mapstructure:"EnableProxyProtocol"`

@@ -23,8 +23,6 @@ type APIClient struct {
 	APIHost             string
 	NodeID              int
 	Key                 string
-	NodeType            string
-	EnableVless         bool
 	SpeedLimit          float64
 	DeviceLimit         int
 	DisableCustomConfig bool
@@ -63,8 +61,6 @@ func New(apiConfig *api.Config) *APIClient {
 		NodeID:              apiConfig.NodeID,
 		Key:                 apiConfig.Key,
 		APIHost:             apiConfig.APIHost,
-		NodeType:            apiConfig.NodeType,
-		EnableVless:         apiConfig.EnableVless,
 		SpeedLimit:          apiConfig.SpeedLimit,
 		DeviceLimit:         apiConfig.DeviceLimit,
 		LocalRuleList:       localRuleList,
@@ -110,7 +106,7 @@ func readLocalRuleList(path string) (LocalRuleList []api.DetectRule) {
 
 // Describe return a description of the client
 func (c *APIClient) Describe() api.ClientInfo {
-	return api.ClientInfo{APIHost: c.APIHost, NodeID: c.NodeID, Key: c.Key, NodeType: c.NodeType}
+	return api.ClientInfo{APIHost: c.APIHost, NodeID: c.NodeID, Key: c.Key}
 }
 
 // Debug set the client debug for client
@@ -401,8 +397,10 @@ func (c *APIClient) ParseUserListResponse(userInfoResponse *[]UserResponse) (*[]
 func (c *APIClient) ParseZeroPanelNodeInfo(nodeInfoResponse *NodeInfoResponse) (*api.NodeInfo, error) {
 
 	var speedlimit uint64 = 0
-	var EnableTLS, EnableVless bool
+	var EnableTLS bool
 	var TLSType, transportProtocol string
+	var nodetype string
+	nodetype = nodeInfoResponse.NodeType
 
 	nodeConfig := new(CustomConfig)
 	json.Unmarshal(nodeInfoResponse.CustomConfig, nodeConfig)
@@ -419,23 +417,28 @@ func (c *APIClient) ParseZeroPanelNodeInfo(nodeInfoResponse *NodeInfoResponse) (
 	}
 	port := uint32(parsedPort)
 
-	if c.NodeType == "Shadowsocks" {
+	if nodetype == "Shadowsocks" {
 		transportProtocol = "tcp"
 	}
 
-	if c.NodeType == "V2ray" {
+	if nodetype == "Vmess" {
 		transportProtocol = nodeConfig.Network
 		TLSType = nodeConfig.Security
 
 		if TLSType == "tls" {
 			EnableTLS = true
 		}
-		if nodeConfig.EnableVless == "1" {
-			EnableVless = true
+	}
+
+	if nodetype == "Vless" {
+		transportProtocol = nodeConfig.Network
+		TLSType = nodeConfig.Security
+		if TLSType == "tls" {
+			EnableTLS = true
 		}
 	}
 
-	if c.NodeType == "Trojan" {
+	if nodetype == "Trojan" {
 		EnableTLS = true
 		TLSType = "tls"
 		transportProtocol = "tcp"
@@ -455,7 +458,7 @@ func (c *APIClient) ParseZeroPanelNodeInfo(nodeInfoResponse *NodeInfoResponse) (
 
 	// Create GeneralNodeInfo
 	nodeinfo := &api.NodeInfo{
-		NodeType:          c.NodeType,
+		NodeType:          nodetype,
 		NodeID:            c.NodeID,
 		Port:              port,
 		SpeedLimit:        speedlimit,
@@ -463,7 +466,6 @@ func (c *APIClient) ParseZeroPanelNodeInfo(nodeInfoResponse *NodeInfoResponse) (
 		Host:              nodeConfig.Host,
 		Path:              nodeConfig.Path,
 		EnableTLS:         EnableTLS,
-		EnableVless:       EnableVless,
 		VlessFlow:         nodeConfig.Flow,
 		CypherMethod:      nodeConfig.MuEncryption,
 		ServerKey:         nodeConfig.ServerPsk,

@@ -13,7 +13,6 @@ func CreateClient() api.API {
 		APIHost:  "http://127.0.0.1:667",
 		Key:      "123",
 		NodeID:   3,
-		NodeType: "V2ray",
 	}
 	client := zeropanel.New(apiConfig)
 	return client
@@ -34,7 +33,6 @@ func TestGetSSNodeinfo(t *testing.T) {
 		APIHost:  "http://127.0.0.1:667",
 		Key:      "123",
 		NodeID:   64,
-		NodeType: "Shadowsocks",
 	}
 	client := zeropanel.New(apiConfig)
 	nodeInfo, err := client.GetNodeInfo()
@@ -49,7 +47,6 @@ func TestGetTrojanNodeinfo(t *testing.T) {
 		APIHost:  "http://127.0.0.1:667",
 		Key:      "123",
 		NodeID:   72,
-		NodeType: "Trojan",
 	}
 	client := zeropanel.New(apiConfig)
 	nodeInfo, err := client.GetNodeInfo()

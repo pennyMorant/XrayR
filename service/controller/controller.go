@@ -381,12 +381,10 @@ func (c *Controller) addInboundForSSPlugin(newNodeInfo api.NodeInfo) (err error)
 func (c *Controller) addNewUser(userInfo *[]api.UserInfo, nodeInfo *api.NodeInfo) (err error) {
 	users := make([]*protocol.User, 0)
 	switch nodeInfo.NodeType {
-	case "V2ray":
-		if nodeInfo.EnableVless {
-			users = c.buildVlessUser(userInfo)
-		} else {
-			users = c.buildVmessUser(userInfo)
-		}
+	case "Vmess":
+		users = c.buildVmessUser(userInfo)
+	case "Vless":
+		users = c.buildVlessUser(userInfo)
 	case "Trojan":
 		users = c.buildTrojanUser(userInfo)
 	case "Shadowsocks":

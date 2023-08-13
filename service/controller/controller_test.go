@@ -61,7 +61,6 @@ func TestController(t *testing.T) {
 		APIHost:  "http://127.0.0.1:667",
 		Key:      "123",
 		NodeID:   41,
-		NodeType: "V2ray",
 	}
 	apiClient := zeropanel.New(apiConfig)
 	c := New(server, apiClient, controlerConfig, "ZeroPanel")
