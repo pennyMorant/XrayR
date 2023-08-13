@@ -1,11 +1,11 @@
-package sspanel_test
+package zeropanel_test
 
 import (
 	"fmt"
 	"testing"
 
 	"github.com/zeropanel/XrayR/api"
-	"github.com/zeropanel/XrayR/api/sspanel"
+	"github.com/zeropanel/XrayR/api/zeropanel"
 )
 
 func CreateClient() api.API {
@@ -15,7 +15,7 @@ func CreateClient() api.API {
 		NodeID:   3,
 		NodeType: "V2ray",
 	}
-	client := sspanel.New(apiConfig)
+	client := zeropanel.New(apiConfig)
 	return client
 }
 
@@ -36,7 +36,7 @@ func TestGetSSNodeinfo(t *testing.T) {
 		NodeID:   64,
 		NodeType: "Shadowsocks",
 	}
-	client := sspanel.New(apiConfig)
+	client := zeropanel.New(apiConfig)
 	nodeInfo, err := client.GetNodeInfo()
 	if err != nil {
 		t.Error(err)
@@ -51,7 +51,7 @@ func TestGetTrojanNodeinfo(t *testing.T) {
 		NodeID:   72,
 		NodeType: "Trojan",
 	}
-	client := sspanel.New(apiConfig)
+	client := zeropanel.New(apiConfig)
 	nodeInfo, err := client.GetNodeInfo()
 	if err != nil {
 		t.Error(err)

@@ -1,4 +1,4 @@
-package sspanel
+package zeropanel
 
 import (
 	"bufio"
@@ -15,12 +15,6 @@ import (
 	"github.com/go-resty/resty/v2"
 
 	"github.com/zeropanel/XrayR/api"
-)
-
-var (
-	firstPortRe  = regexp.MustCompile(`(?m)port=(?P<outport>\d+)#?`) // First Port
-	secondPortRe = regexp.MustCompile(`(?m)port=\d+#(\d+)`)          // Second Port
-	hostRe       = regexp.MustCompile(`(?m)host=([\w.]+)\|?`)        // Host
 )
 
 // APIClient create a api client to the panel.
@@ -146,7 +140,7 @@ func (c *APIClient) parseResponse(res *resty.Response, path string, err error) (
 	return response, nil
 }
 
-// GetNodeInfo will pull NodeInfo Config from sspanel
+// GetNodeInfo will pull NodeInfo Config from zeropanel
 func (c *APIClient) GetNodeInfo() (nodeInfo *api.NodeInfo, err error) {
 	path := fmt.Sprintf("/mod_mu/nodes/%d/info", c.NodeID)
 	res, err := c.client.R().
@@ -165,11 +159,11 @@ func (c *APIClient) GetNodeInfo() (nodeInfo *api.NodeInfo, err error) {
 		return nil, fmt.Errorf("unmarshal %s failed: %s", reflect.TypeOf(nodeInfoResponse), err)
 	}
 
-	// New sspanel API
+	// New zeropanel API
 	disableCustomConfig := c.DisableCustomConfig
 
 	if !disableCustomConfig {
-		nodeInfo, err = c.ParseSSPanelNodeInfo(nodeInfoResponse)
+		nodeInfo, err = c.ParseZeroPanelNodeInfo(nodeInfoResponse)
 		if err != nil {
 			res, _ := json.Marshal(nodeInfoResponse)
 			return nil, fmt.Errorf("Parse node info failed: %s, \nError: %s, \nPlease check the doc of custom_config for help: https://zeropanel.github.io/XrayR-doc/dui-jie-sspanel/sspanel/sspanel_custom_config", string(res), err)
@@ -184,7 +178,7 @@ func (c *APIClient) GetNodeInfo() (nodeInfo *api.NodeInfo, err error) {
 	return nodeInfo, nil
 }
 
-// GetUserList will pull user form sspanel
+// GetUserList will pull user form zeropanel
 func (c *APIClient) GetUserList() (UserList *[]api.UserInfo, err error) {
 	path := "/mod_mu/users"
 	res, err := c.client.R().
@@ -211,7 +205,7 @@ func (c *APIClient) GetUserList() (UserList *[]api.UserInfo, err error) {
 	return userList, nil
 }
 
-// ReportNodeStatus reports the node status to the sspanel
+// ReportNodeStatus reports the node status to the zeropanel
 func (c *APIClient) ReportNodeStatus(nodeStatus *api.NodeStatus) (err error) {
 	path := fmt.Sprintf("/mod_mu/nodes/%d/info", c.NodeID)
 	systemload := SystemLoad{
@@ -293,7 +287,7 @@ func (c *APIClient) ReportUserTraffic(userTraffic *[]api.UserTraffic) error {
 	return nil
 }
 
-// GetNodeRule will pull the audit rule form sspanel
+// GetNodeRule will pull the audit rule form zeropanel
 func (c *APIClient) GetNodeRule() (*[]api.DetectRule, error) {
 	ruleList := c.LocalRuleList
 	path := "/mod_mu/func/detect_rules"
@@ -390,22 +384,21 @@ func (c *APIClient) ParseUserListResponse(userInfoResponse *[]UserResponse) (*[]
 			speedlimit = uint64((user.SpeedLimit * 1000000) / 8)
 		}
 		userList = append(userList, api.UserInfo{
-			UID:           user.ID,
-			Email:         user.Email,
-			UUID:          user.UUID,
-			Passwd:        user.Passwd,
-			SpeedLimit:    speedlimit,
-			DeviceLimit:   deviceLimit,
-			Port:          user.Port,
+			UID:         user.ID,
+			Email:       user.Email,
+			UUID:        user.UUID,
+			Passwd:      user.Passwd,
+			SpeedLimit:  speedlimit,
+			DeviceLimit: deviceLimit,
+			Port:        user.Port,
 		})
 	}
 
 	return &userList, nil
 }
 
-// ParseSSPanelNodeInfo parse the response for the given nodeinfor format
-// Only used for SSPanel version >= 2021.11
-func (c *APIClient) ParseSSPanelNodeInfo(nodeInfoResponse *NodeInfoResponse) (*api.NodeInfo, error) {
+// ParsezeropanelNodeInfo parse the response for the given nodeinfor format
+func (c *APIClient) ParseZeroPanelNodeInfo(nodeInfoResponse *NodeInfoResponse) (*api.NodeInfo, error) {
 
 	var speedlimit uint64 = 0
 	var EnableTLS, EnableVless bool
@@ -473,7 +466,7 @@ func (c *APIClient) ParseSSPanelNodeInfo(nodeInfoResponse *NodeInfoResponse) (*a
 		EnableVless:       EnableVless,
 		VlessFlow:         nodeConfig.Flow,
 		CypherMethod:      nodeConfig.MuEncryption,
-		ServerKey:		   nodeConfig.ServerPsk,
+		ServerKey:         nodeConfig.ServerPsk,
 		ServiceName:       nodeConfig.Servicename,
 		Header:            nodeConfig.Header,
 	}

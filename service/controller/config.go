@@ -12,6 +12,7 @@ type Config struct {
 	CertConfig              *mylego.CertConfig               `mapstructure:"CertConfig"`
 	EnableDNS               bool                             `mapstructure:"EnableDNS"`
 	DNSType                 string                           `mapstructure:"DNSType"`
+	EnableVless				bool							 `mapstructure:"EnableVless"`	
 	DisableUploadTraffic    bool                             `mapstructure:"DisableUploadTraffic"`
 	DisableGetRule          bool                             `mapstructure:"DisableGetRule"`
 	EnableProxyProtocol     bool                             `mapstructure:"EnableProxyProtocol"`

@@ -12,7 +12,7 @@ import (
 	"github.com/xtls/xray-core/infra/conf"
 
 	"github.com/zeropanel/XrayR/api"
-	"github.com/zeropanel/XrayR/api/sspanel"
+	"github.com/zeropanel/XrayR/api/zeropanel"
 	"github.com/zeropanel/XrayR/common/mylego"
 	_ "github.com/zeropanel/XrayR/main/distro/all"
 	. "github.com/zeropanel/XrayR/service/controller"
@@ -63,8 +63,8 @@ func TestController(t *testing.T) {
 		NodeID:   41,
 		NodeType: "V2ray",
 	}
-	apiClient := sspanel.New(apiConfig)
-	c := New(server, apiClient, controlerConfig, "SSpanel")
+	apiClient := zeropanel.New(apiConfig)
+	c := New(server, apiClient, controlerConfig, "ZeroPanel")
 	fmt.Println("Sleep 1s")
 	err = c.Start()
 	if err != nil {

@@ -1,15 +1,15 @@
-package sspanel
+package zeropanel
 
 import "encoding/json"
 
 // NodeInfoResponse is the response of node
 type NodeInfoResponse struct {
-	Class           int             `json:"node_class"`
-	SpeedLimit      float64         `json:"node_speedlimit"`
-	TrafficRate     float64         `json:"traffic_rate"`
-	Sort            int             `json:"sort"`
-	Type            string          `json:"type"`
-	CustomConfig    json.RawMessage `json:"custom_config"`
+	Class        int             `json:"node_class"`
+	SpeedLimit   float64         `json:"node_speedlimit"`
+	TrafficRate  float64         `json:"traffic_rate"`
+	Sort         int             `json:"sort"`
+	Type         string          `json:"type"`
+	CustomConfig json.RawMessage `json:"custom_config"`
 }
 
 type CustomConfig struct {
@@ -22,7 +22,7 @@ type CustomConfig struct {
 	MuProtocol     string          `json:"mu_protocol"`
 	MuObfs         string          `json:"mu_obfs"`
 	MuSuffix       string          `json:"mu_suffix"`
-	ServerPsk	   string		   `json:"server_psk"`
+	ServerPsk      string          `json:"server_psk"`
 	V2Port         string          `json:"v2_port"`
 	TLS            string          `json:"tls"`
 	EnableVless    string          `json:"enable_vless"`
@@ -41,14 +41,14 @@ type CustomConfig struct {
 
 // UserResponse is the response of user
 type UserResponse struct {
-	ID            int     `json:"id"`
-	Email         string  `json:"email"`
-	Passwd        string  `json:"passwd"`
-	Port          uint32  `json:"port"`
-	SpeedLimit    float64 `json:"node_speedlimit"`
-	DeviceLimit   int     `json:"node_iplimit"`
-	UUID          string  `json:"uuid"`
-	AliveIP       int     `json:"alive_ip"`
+	ID          int     `json:"id"`
+	Email       string  `json:"email"`
+	Passwd      string  `json:"passwd"`
+	Port        uint32  `json:"port"`
+	SpeedLimit  float64 `json:"node_speedlimit"`
+	DeviceLimit int     `json:"node_iplimit"`
+	UUID        string  `json:"uuid"`
+	AliveIP     int     `json:"alive_ip"`
 }
 
 // Response is the common response

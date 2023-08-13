@@ -6,7 +6,6 @@ import (
 	"os"
 	"sync"
 
-	"github.com/zeropanel/XrayR/api/newV2board"
 	"github.com/zeropanel/XrayR/app/mydispatcher"
 
 	"github.com/imdario/mergo"
@@ -18,9 +17,7 @@ import (
 	"github.com/xtls/xray-core/infra/conf"
 
 	"github.com/zeropanel/XrayR/api"
-	"github.com/zeropanel/XrayR/api/proxypanel"
-	"github.com/zeropanel/XrayR/api/sspanel"
-	"github.com/zeropanel/XrayR/api/v2raysocks"
+	"github.com/zeropanel/XrayR/api/zeropanel"
 	_ "github.com/zeropanel/XrayR/main/distro/all"
 	"github.com/zeropanel/XrayR/service"
 	"github.com/zeropanel/XrayR/service/controller"
@@ -173,15 +170,8 @@ func (p *Panel) Start() {
 	for _, nodeConfig := range p.panelConfig.NodesConfig {
 		var apiClient api.API
 		switch nodeConfig.PanelType {
-		case "SSpanel":
-			apiClient = sspanel.New(nodeConfig.ApiConfig)
-		// todo Deprecated after 2023.6.1
-		case "NewV2board":
-			apiClient = newV2board.New(nodeConfig.ApiConfig)
-		case "Proxypanel":
-			apiClient = proxypanel.New(nodeConfig.ApiConfig)
-		case "V2RaySocks":
-			apiClient = v2raysocks.New(nodeConfig.ApiConfig)
+		case "ZeroPanel":
+			apiClient = zeropanel.New(nodeConfig.ApiConfig)
 		default:
 			log.Panicf("Unsupport panel type: %s", nodeConfig.PanelType)
 		}
