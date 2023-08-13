@@ -47,6 +47,7 @@ func (c *Controller) buildVlessUser(userInfo *[]api.UserInfo) (users []*protocol
 		vlessAccount := &vless.Account{
 			Id:   user.UUID,
 			Flow: vless.XRV,
+			Encryption: "none",
 		}
 		users[i] = &protocol.User{
 			Level:   0,
