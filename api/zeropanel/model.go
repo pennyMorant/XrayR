@@ -7,8 +7,7 @@ type NodeInfoResponse struct {
 	Class        int             `json:"node_class"`
 	SpeedLimit   float64         `json:"node_speedlimit"`
 	TrafficRate  float64         `json:"traffic_rate"`
-	Sort         int             `json:"sort"`
-	Type         string          `json:"type"`
+	Type         int             `json:"node_type"`
 	CustomConfig json.RawMessage `json:"custom_config"`
 }
 
