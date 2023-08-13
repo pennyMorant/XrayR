@@ -142,7 +142,7 @@ func (c *APIClient) parseResponse(res *resty.Response, path string, err error) (
 
 // GetNodeInfo will pull NodeInfo Config from zeropanel
 func (c *APIClient) GetNodeInfo() (nodeInfo *api.NodeInfo, err error) {
-	path := fmt.Sprintf("/mod_mu/nodes/%d/info", c.NodeID)
+	path := fmt.Sprintf("/api/v1/server/nodes/%d/info", c.NodeID)
 	res, err := c.client.R().
 		SetResult(&Response{}).
 		ForceContentType("application/json").
@@ -180,7 +180,7 @@ func (c *APIClient) GetNodeInfo() (nodeInfo *api.NodeInfo, err error) {
 
 // GetUserList will pull user form zeropanel
 func (c *APIClient) GetUserList() (UserList *[]api.UserInfo, err error) {
-	path := "/mod_mu/users"
+	path := "/api/v1/server/users"
 	res, err := c.client.R().
 		SetQueryParam("node_id", strconv.Itoa(c.NodeID)).
 		SetResult(&Response{}).
@@ -207,7 +207,7 @@ func (c *APIClient) GetUserList() (UserList *[]api.UserInfo, err error) {
 
 // ReportNodeStatus reports the node status to the zeropanel
 func (c *APIClient) ReportNodeStatus(nodeStatus *api.NodeStatus) (err error) {
-	path := fmt.Sprintf("/mod_mu/nodes/%d/info", c.NodeID)
+	path := fmt.Sprintf("/api/v1/server/nodes/%d/info", c.NodeID)
 	systemload := SystemLoad{
 		Uptime: strconv.FormatUint(nodeStatus.Uptime, 10),
 		Load:   fmt.Sprintf("%.2f %.2f %.2f", nodeStatus.CPU/100, nodeStatus.Mem/100, nodeStatus.Disk/100),
@@ -245,7 +245,7 @@ func (c *APIClient) ReportNodeOnlineUsers(onlineUserList *[]api.OnlineUser) erro
 	c.LastReportOnline = reportOnline // Update LastReportOnline
 
 	postData := &PostData{Data: data}
-	path := fmt.Sprintf("/mod_mu/users/aliveip")
+	path := fmt.Sprintf("/api/v1/server/users/aliveip")
 	res, err := c.client.R().
 		SetQueryParam("node_id", strconv.Itoa(c.NodeID)).
 		SetBody(postData).
@@ -272,7 +272,7 @@ func (c *APIClient) ReportUserTraffic(userTraffic *[]api.UserTraffic) error {
 			Download: traffic.Download}
 	}
 	postData := &PostData{Data: data}
-	path := "/mod_mu/users/traffic"
+	path := "/api/v1/server/users/traffic"
 	res, err := c.client.R().
 		SetQueryParam("node_id", strconv.Itoa(c.NodeID)).
 		SetBody(postData).
@@ -290,7 +290,7 @@ func (c *APIClient) ReportUserTraffic(userTraffic *[]api.UserTraffic) error {
 // GetNodeRule will pull the audit rule form zeropanel
 func (c *APIClient) GetNodeRule() (*[]api.DetectRule, error) {
 	ruleList := c.LocalRuleList
-	path := "/mod_mu/func/detect_rules"
+	path := "/api/v1/server/func/detect_rules"
 	res, err := c.client.R().
 		SetResult(&Response{}).
 		ForceContentType("application/json").
@@ -327,7 +327,7 @@ func (c *APIClient) ReportIllegal(detectResultList *[]api.DetectResult) error {
 		}
 	}
 	postData := &PostData{Data: data}
-	path := "/mod_mu/users/detectlog"
+	path := "/api/v1/server/users/detectlog"
 	res, err := c.client.R().
 		SetQueryParam("node_id", strconv.Itoa(c.NodeID)).
 		SetBody(postData).
