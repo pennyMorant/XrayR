@@ -169,12 +169,7 @@ func (p *Panel) Start() {
 	// Load Nodes config
 	for _, nodeConfig := range p.panelConfig.NodesConfig {
 		var apiClient api.API
-		switch nodeConfig.PanelType {
-		case "ZeroPanel":
-			apiClient = zeropanel.New(nodeConfig.ApiConfig)
-		default:
-			log.Panicf("Unsupport panel type: %s", nodeConfig.PanelType)
-		}
+		apiClient = zeropanel.New(nodeConfig.ApiConfig)
 		var controllerService service.Service
 		// Register controller service
 		controllerConfig := getDefaultControllerConfig()
@@ -183,7 +178,7 @@ func (p *Panel) Start() {
 				log.Panicf("Read Controller Config Failed")
 			}
 		}
-		controllerService = controller.New(server, apiClient, controllerConfig, nodeConfig.PanelType)
+		controllerService = controller.New(server, apiClient, controllerConfig)
 		p.Service = append(p.Service, controllerService)
 
 	}

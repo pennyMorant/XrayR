@@ -37,7 +37,6 @@ type Controller struct {
 	tasks        []periodicTask
 	limitedUsers map[api.UserInfo]LimitInfo
 	warnedUsers  map[api.UserInfo]int
-	panelType    string
 	ibm          inbound.Manager
 	obm          outbound.Manager
 	stm          stats.Manager
@@ -51,12 +50,11 @@ type periodicTask struct {
 }
 
 // New return a Controller service with default parameters.
-func New(server *core.Instance, api api.API, config *Config, panelType string) *Controller {
+func New(server *core.Instance, api api.API, config *Config) *Controller {
 	controller := &Controller{
 		server:     server,
 		config:     config,
 		apiClient:  api,
-		panelType:  panelType,
 		ibm:        server.GetFeature(inbound.ManagerType()).(inbound.Manager),
 		obm:        server.GetFeature(outbound.ManagerType()).(outbound.Manager),
 		stm:        server.GetFeature(stats.ManagerType()).(stats.Manager),

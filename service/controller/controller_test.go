@@ -63,7 +63,7 @@ func TestController(t *testing.T) {
 		NodeID:   41,
 	}
 	apiClient := zeropanel.New(apiConfig)
-	c := New(server, apiClient, controlerConfig, "ZeroPanel")
+	c := New(server, apiClient, controlerConfig)
 	fmt.Println("Sleep 1s")
 	err = c.Start()
 	if err != nil {
