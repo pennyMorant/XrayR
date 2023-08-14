@@ -5,7 +5,7 @@ go 1.20
 require (
 	github.com/deckarep/golang-set v1.8.0
 	github.com/eko/gocache/lib/v4 v4.1.4
-	github.com/eko/gocache/store/go_cache/v4 v4.1.2
+	github.com/eko/gocache/store/go_cache/v4 v4.2.0
 	github.com/eko/gocache/store/redis/v4 v4.1.2
 	github.com/fsnotify/fsnotify v1.6.0
 	github.com/go-acme/lego/v4 v4.10.2
