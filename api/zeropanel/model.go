@@ -33,7 +33,7 @@ type CustomConfig struct {
 	TrojanPort     string          `json:"trojan_port"`
 	AllowInsecure  string          `json:"allow_insecure"`
 	Grpc           string          `json:"grpc"`
-	Servicename    string          `json:"servicename"`
+	ServiceName    string          `json:"servicename"`
 	Flow           string          `json:"flow"`
 }
 

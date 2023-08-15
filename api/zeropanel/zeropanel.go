@@ -469,7 +469,7 @@ func (c *APIClient) ParseZeroPanelNodeInfo(nodeInfoResponse *NodeInfoResponse) (
 		VlessFlow:         nodeConfig.Flow,
 		CypherMethod:      nodeConfig.MuEncryption,
 		ServerKey:         nodeConfig.ServerPsk,
-		ServiceName:       nodeConfig.Servicename,
+		ServiceName:       nodeConfig.ServiceName,
 		Header:            nodeConfig.Header,
 	}
 
