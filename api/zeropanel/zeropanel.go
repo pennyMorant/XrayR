@@ -428,13 +428,7 @@ func (c *APIClient) ParseZeroPanelNodeInfo(nodeInfoResponse *NodeInfoResponse) (
 	}
 
 	if nodetype == "Trojan" {
-		transportProtocol = "tcp"
-		// Select transport protocol
-		if nodeConfig.Network == "grpc" {
-			transportProtocol = "grpc"
-		} else if nodeConfig.Network != "" {
-			transportProtocol = nodeConfig.Network // try to read transport protocol from config
-		}
+		transportProtocol = nodeConfig.Network
 	}
 
 	// Create GeneralNodeInfo
@@ -448,7 +442,7 @@ func (c *APIClient) ParseZeroPanelNodeInfo(nodeInfoResponse *NodeInfoResponse) (
 		Path:              nodeConfig.Path,
 		Security:          nodeConfig.Security,
 		VlessFlow:         nodeConfig.Flow,
-		CypherMethod:      nodeConfig.MuEncryption,
+		CypherMethod:      nodeConfig.SSEncryption,
 		ServerKey:         nodeConfig.ServerPsk,
 		ServiceName:       nodeConfig.ServiceName,
 		Header:            nodeConfig.Header,
