@@ -18,7 +18,6 @@ import (
 	"github.com/zeropanel/XrayR/api"
 	"github.com/zeropanel/XrayR/api/zeropanel"
 	"github.com/zeropanel/XrayR/common/mylego"
-	"github.com/zeropanel/XrayR/zeropanel"
 )
 
 // InboundBuilder build Inbound config for different protocol
