@@ -17,7 +17,6 @@ func TestBuildV2ray(t *testing.T) {
 		TransportProtocol: "ws",
 		Host:              "test.test.tk",
 		Path:              "v2ray",
-		EnableTLS:         false,
 	}
 	certConfig := &mylego.CertConfig{
 		CertMode:   "http",
@@ -43,7 +42,6 @@ func TestBuildTrojan(t *testing.T) {
 		TransportProtocol: "tcp",
 		Host:              "trojan.test.tk",
 		Path:              "v2ray",
-		EnableTLS:         false,
 	}
 	DNSEnv := make(map[string]string)
 	DNSEnv["ALICLOUD_ACCESS_KEY"] = "aaa"
@@ -73,7 +71,6 @@ func TestBuildSS(t *testing.T) {
 		TransportProtocol: "tcp",
 		Host:              "test.test.tk",
 		Path:              "v2ray",
-		EnableTLS:         false,
 	}
 	DNSEnv := make(map[string]string)
 	DNSEnv["ALICLOUD_ACCESS_KEY"] = "aaa"

@@ -32,9 +32,21 @@ type CustomConfig struct {
 	Header         json.RawMessage `json:"header"`
 	TrojanPort     string          `json:"trojan_port"`
 	AllowInsecure  string          `json:"allow_insecure"`
-	Grpc           string          `json:"grpc"`
 	ServiceName    string          `json:"servicename"`
 	Flow           string          `json:"flow"`
+	RealityConfig json.RawMessage  `json:"reality_config"`
+}
+
+type RealityConfig struct {
+	Show    bool            `json:"show"`
+	Dest    string          `json:"dest"`
+	ProxyProtocolVer uint64 `json:"proxy_protocol_ver"`
+	ServerNames []string    `json:"server_names"`
+	PrivateKey string       `json:"private_key"`
+	MinClientVer string     `json:"min_client_ver"`
+	MaxClientVer string     `json:"max_client_ver"`
+	MaxTimeDiff uint64     	`json:"max_time_diff"`
+	ShortIds []string       `json:"short_ids"`
 }
 
 // UserResponse is the response of user

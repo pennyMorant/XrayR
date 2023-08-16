@@ -36,13 +36,14 @@ type NodeInfo struct {
 	FakeType          string
 	Host              string
 	Path              string
-	EnableTLS         bool
+	Security          string
 	VlessFlow         string
 	CypherMethod      string
 	ServerKey         string
 	ServiceName       string
 	Header            json.RawMessage
 	NameServerConfig  []*conf.NameServerConfig
+	RealityConfig     json.RawMessage
 }
 
 type UserInfo struct {

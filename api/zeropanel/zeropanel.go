@@ -397,14 +397,12 @@ func (c *APIClient) ParseUserListResponse(userInfoResponse *[]UserResponse) (*[]
 func (c *APIClient) ParseZeroPanelNodeInfo(nodeInfoResponse *NodeInfoResponse) (*api.NodeInfo, error) {
 
 	var speedlimit uint64 = 0
-	var EnableTLS bool
-	var TLSType, transportProtocol string
+	var transportProtocol string
 	var nodetype string
 	nodetype = nodeInfoResponse.NodeType
 
 	nodeConfig := new(CustomConfig)
 	json.Unmarshal(nodeInfoResponse.CustomConfig, nodeConfig)
-
 	if c.SpeedLimit > 0 {
 		speedlimit = uint64((c.SpeedLimit * 1000000) / 8)
 	} else {
@@ -423,33 +421,16 @@ func (c *APIClient) ParseZeroPanelNodeInfo(nodeInfoResponse *NodeInfoResponse) (
 
 	if nodetype == "Vmess" {
 		transportProtocol = nodeConfig.Network
-		TLSType = nodeConfig.Security
-
-		if TLSType == "tls" {
-			EnableTLS = true
-		}
 	}
 
 	if nodetype == "Vless" {
 		transportProtocol = nodeConfig.Network
-		TLSType = nodeConfig.Security
-		if TLSType == "tls" {
-			EnableTLS = true
-		}
 	}
 
 	if nodetype == "Trojan" {
-		EnableTLS = true
-		TLSType = "tls"
 		transportProtocol = "tcp"
-
-		// Select security type
-		if nodeConfig.Security != "" {
-			TLSType = nodeConfig.Security // try to read security from config
-		}
-
 		// Select transport protocol
-		if nodeConfig.Grpc == "1" {
+		if nodeConfig.Network == "grpc" {
 			transportProtocol = "grpc"
 		} else if nodeConfig.Network != "" {
 			transportProtocol = nodeConfig.Network // try to read transport protocol from config
@@ -465,12 +446,13 @@ func (c *APIClient) ParseZeroPanelNodeInfo(nodeInfoResponse *NodeInfoResponse) (
 		TransportProtocol: transportProtocol,
 		Host:              nodeConfig.Host,
 		Path:              nodeConfig.Path,
-		EnableTLS:         EnableTLS,
+		Security:          nodeConfig.Security,
 		VlessFlow:         nodeConfig.Flow,
 		CypherMethod:      nodeConfig.MuEncryption,
 		ServerKey:         nodeConfig.ServerPsk,
 		ServiceName:       nodeConfig.ServiceName,
 		Header:            nodeConfig.Header,
+		RealityConfig:     nodeConfig.RealityConfig,
 	}
 
 	return nodeinfo, nil

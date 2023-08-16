@@ -16,7 +16,9 @@ import (
 	"github.com/xtls/xray-core/infra/conf"
 
 	"github.com/zeropanel/XrayR/api"
+	"github.com/zeropanel/XrayR/api/zeropanel"
 	"github.com/zeropanel/XrayR/common/mylego"
+	"github.com/zeropanel/XrayR/zeropanel"
 )
 
 // InboundBuilder build Inbound config for different protocol
@@ -183,24 +185,26 @@ func InboundBuilder(config *Config, nodeInfo *api.NodeInfo, tag string) (*core.I
 	streamSetting.Network = &transportProtocol
 
 	// Build TLS and REALITY settings
-	if config.EnableREALITY {
-		dest, err := json.Marshal(config.REALITYConfigs.Dest)
+	if nodeInfo.Security == "reality"{
+		realityConfig := new(zeropanel.RealityConfig)
+		json.Unmarshal(nodeInfo.RealityConfig, realityConfig)
+		dest, err := json.Marshal(realityConfig.Dest)
 		if err != nil {
 			return nil, fmt.Errorf("marshal dest %s config fialed: %s", dest, err)
 		}
 		streamSetting.Security = "reality"
 		streamSetting.REALITYSettings = &conf.REALITYConfig{
-			Show:         config.REALITYConfigs.Show,
+			Show:         realityConfig.Show,
 			Dest:         dest,
-			Xver:         config.REALITYConfigs.ProxyProtocolVer,
-			ServerNames:  config.REALITYConfigs.ServerNames,
-			PrivateKey:   config.REALITYConfigs.PrivateKey,
-			MinClientVer: config.REALITYConfigs.MinClientVer,
-			MaxClientVer: config.REALITYConfigs.MaxClientVer,
-			MaxTimeDiff:  config.REALITYConfigs.MaxTimeDiff,
-			ShortIds:     config.REALITYConfigs.ShortIds,
+			Xver:         realityConfig.ProxyProtocolVer,
+			ServerNames:  realityConfig.ServerNames,
+			PrivateKey:   realityConfig.PrivateKey,
+			MinClientVer: realityConfig.MinClientVer,
+			MaxClientVer: realityConfig.MaxClientVer,
+			MaxTimeDiff:  realityConfig.MaxTimeDiff,
+			ShortIds:     realityConfig.ShortIds,
 		}
-	} else if nodeInfo.EnableTLS && config.CertConfig.CertMode != "none" {
+	} else if nodeInfo.Security == "tls" && config.CertConfig.CertMode != "none" {
 		streamSetting.Security = "tls"
 		certFile, keyFile, err := getCertFile(config.CertConfig)
 		if err != nil {
